@@ -10,6 +10,11 @@ export default function Home() {
 			<Head>
 				<title>Code Snippets Repository</title>
 				<link rel="icon" href="/favicon.ico" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" />
+				<link
+					href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap"
+					rel="stylesheet"
+				/>
 			</Head>
 
 			<main className="">

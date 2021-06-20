@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 body {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
+}
+
+pre {
+	font-family: Fira Code, Menlo, Monaco, Consolas, Liberation Mono, Courier New,
+		monospace;
 }

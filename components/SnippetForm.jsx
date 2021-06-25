@@ -1,14 +1,15 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import Link from "next/link";
-export default function SnippetForm({ snippet }) {
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
+export default function SnippetForm({ snippet, deleteBtn }) {
 	const { register, handleSubmit, errors } = useForm({
 		defaultValues: {
-			code: snippet ? snippet.data.code : "",
-			language: snippet ? snippet.data.language : "",
-			description: snippet ? snippet.data.description : "",
-			name: snippet ? snippet.data.name : "",
+			code: snippet ? snippet.data.code : '',
+			language: snippet ? snippet.data.language : '',
+			description: snippet ? snippet.data.description : '',
+			name: snippet ? snippet.data.name : '',
 		},
 	});
 	const router = useRouter();
@@ -16,14 +17,14 @@ export default function SnippetForm({ snippet }) {
 	const createSnippet = async (data) => {
 		const { code, language, description, name } = data;
 		try {
-			await fetch("/api/createSnippet", {
-				method: "POST",
+			await fetch('/api/createSnippet', {
+				method: 'POST',
 				body: JSON.stringify({ code, language, description, name }),
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 				},
 			});
-			router.push("/");
+			router.push('/');
 		} catch (err) {
 			console.error(err);
 		}
@@ -34,14 +35,29 @@ export default function SnippetForm({ snippet }) {
 		const id = snippet.id;
 		try {
 			//TODO: update snippet
-			await fetch("/api/updateSnippet", {
-				method: "PUT",
+			await fetch('/api/updateSnippet', {
+				method: 'PUT',
 				body: JSON.stringify({ code, language, description, name, id }),
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 				},
 			});
-			router.push("/");
+			router.push('/');
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const deleteSnippet = async () => {
+		try {
+			await fetch('/api/deleteSnippet', {
+				method: 'DELETE',
+				body: JSON.stringify({ id: snippet.id }),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			router.push('/');
 		} catch (err) {
 			console.error(err);
 		}
@@ -120,7 +136,7 @@ export default function SnippetForm({ snippet }) {
 					name="code"
 					id="code"
 					rows="10"
-					className="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+					className="resize-none w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none font-fira-code"
 					placeholder="ex. console.log('helloworld')"
 					ref={register({ required: true })}
 				></textarea>
@@ -135,10 +151,19 @@ export default function SnippetForm({ snippet }) {
 				Save
 			</button>
 			<Link href="/">
-				<a className="mt-3 inline-block bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+				<a className="mt-3 inline-block bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">
 					Cancel
 				</a>
 			</Link>
+			{deleteBtn === true && (
+				<button
+					className="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+					type="button"
+					onClick={deleteSnippet}
+				>
+					Delete
+				</button>
+			)}
 		</form>
 	);
 }
